@@ -32,13 +32,14 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Intrafront">
       <AppContent />
     </BrowserRouter>
   );
 }
 
 export default App;
+
 
 
 
