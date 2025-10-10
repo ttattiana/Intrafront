@@ -1,13 +1,15 @@
 import React from "react";
 
 export default function Dashboard({ onLogout }) {
-    return (
-    <div style={{
-      width: "100vw",
-      height: "100vh",
-      background: "#222",
-      position: "relative"
-    }}>
+  return (
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        background: "#222",
+        position: "relative",
+      }}
+    >
       <button
         style={{
           position: "absolute",
@@ -27,57 +29,89 @@ export default function Dashboard({ onLogout }) {
       >
         Cerrar sesión
       </button>
-      <div style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        gap: "48px",
-      }}>
-        <button style={{
-          flex: 1,
-          height: "80vh",
-          maxWidth: "680px",
-          backgroundColor: "#3153e6",
-          color: "white",
-          borderRadius: "32px",
-          border: "none",
-          cursor: "pointer",
+      <div
+        style={{
           display: "flex",
-          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          fontSize: "3rem",
-          fontWeight: "bold",
-          margin: 0,
-        }}>
+          height: "100vh",
+          gap: "48px",
+        }}
+      >
+        <button
+          style={{
+            flex: 1,
+            height: "80vh",
+            maxWidth: "480px",
+            backgroundColor: "#3153e6",
+            color: "white",
+            borderRadius: "32px",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: "3rem",
+            fontWeight: "bold",
+            margin: 0,
+          }}
+        >
           <div style={{ fontSize: "8rem", marginBottom: "32px" }}>🏢</div>
           Empresa
         </button>
-        <button style={{
-          flex: 1,
-          height: "80vh",
-          maxWidth: "680px",
-          backgroundColor: "#3153e6",
-          color: "white",
-          borderRadius: "32px",
-          border: "none",
-          cursor: "pointer",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "3rem",
-          fontWeight: "bold",
-          margin: 0,
-        }}>
+
+        <button
+          style={{
+            flex: 1,
+            height: "80vh",
+            maxWidth: "480px",
+            backgroundColor: "#3153e6",
+            color: "white",
+            borderRadius: "32px",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: "3rem",
+            fontWeight: "bold",
+            margin: 0,
+          }}
+        >
           <div style={{ fontSize: "8rem", marginBottom: "32px" }}>📦🔧</div>
           Inventario y Herramientas
+        </button>
+
+        {/* NUEVO PANEL DE ADMINISTRADOR */}
+        <button
+          style={{
+            flex: 1,
+            height: "80vh",
+            maxWidth: "480px",
+            backgroundColor: "#3153e6",
+            color: "white",
+            borderRadius: "32px",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: "3rem",
+            fontWeight: "bold",
+            margin: 0,
+          }}
+        >
+          <div style={{ fontSize: "8rem", marginBottom: "32px" }}>🛠️</div>
+          Panel Administrador
         </button>
       </div>
     </div>
   );
 }
+
 
 
 
