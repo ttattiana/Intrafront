@@ -1,36 +1,51 @@
-import { BrowserRouter, Routes, Route, Link, useNavigate, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useNavigate, Navigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import AdminPanel from "./pages/AdminPanel";
+import ModuloInventario from "./pages/ModuloInventario";
+import EntregaHerramienta from "./pages/EntregaHerramienta.jsx";
 
 function AppContent() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // El menú NO aparece en /login
+  const mostrarNavbar = location.pathname !== "/login";
 
   const handleLogout = () => {
     setUser(null);
-    navigate("/login"); // redirige al login
+    navigate("/login");
   };
 
   return (
     <div>
-      <nav style={{ display: "flex", gap: 24, marginBottom: 32 }}>
-        {!user && <Link to="/register">Registro</Link>}
-        {!user && <Link to="/login">Login</Link>}
-        {user && <Link to="/dashboard">Dashboard</Link>}
-      </nav>
+      {mostrarNavbar && (
+        <nav style={{ display: "flex", gap: 24, marginBottom: 32 }}>
+          <Link to="/register">Registro</Link>
+          <Link to="/login">Login</Link>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/admin-panel">Panel Administrador</Link>
+          <Link to="/inventario">Módulo de Inventario</Link>
+        </nav>
+      )}
+
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login onLogin={setUser} />} />
         <Route path="/dashboard" element={<Dashboard user={user} onLogout={handleLogout} />} />
+        <Route path="/admin-panel" element={<AdminPanel />} />
+        <Route path="/inventario" element={<ModuloInventario />} />
+        <Route path="/entrega" element={<EntregaHerramienta />} />
       </Routes>
     </div>
   );
 }
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter basename="/Intrafront">
       <AppContent />
@@ -38,7 +53,7 @@ function App() {
   );
 }
 
-export default App;
+
 
 
 
