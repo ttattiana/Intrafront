@@ -4,7 +4,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import AdminPanel from "./pages/AdminPanel";
-import ModuloInventario from "./pages/ModuloInventario";
+// import ModuloInventario from "./pages/ModuloInventario"; // <-- COMENTADO: Causa error 500. REVISAR ESTE ARCHIVO
 import EntregaHerramienta from "./pages/EntregaHerramienta.jsx";
 
 function AppContent() {
@@ -28,7 +28,7 @@ function AppContent() {
           <Link to="/login">Login</Link>
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/admin-panel">Panel Administrador</Link>
-          <Link to="/inventario">Módulo de Inventario</Link>
+          {/* <Link to="/inventario">Módulo de Inventario</Link> */} {/* <-- COMENTADO TEMPORALMENTE */}
         </nav>
       )}
 
@@ -38,7 +38,9 @@ function AppContent() {
         <Route path="/login" element={<Login onLogin={setUser} />} />
         <Route path="/dashboard" element={<Dashboard user={user} onLogout={handleLogout} />} />
         <Route path="/admin-panel" element={<AdminPanel />} />
-        <Route path="/inventario" element={<ModuloInventario />} />
+        {/* <Route path="/inventario" element={<ModuloInventario />} /> */} {/* <-- COMENTADO TEMPORALMENTE */}
+        
+        {/* Usamos /prestamo para que coincida con el QR si lo ajustas, o mantenemos /entrega */}
         <Route path="/entrega" element={<EntregaHerramienta />} />
       </Routes>
     </div>
@@ -47,12 +49,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BrowserRouter basename="/Intrafront">
+    // ELIMINADO EL basename="/Intrafront"
+    <BrowserRouter> 
       <AppContent />
     </BrowserRouter>
   );
 }
-
 
 
 

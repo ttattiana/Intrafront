@@ -1,6 +1,9 @@
 import React, { useState, useRef } from "react";
 import QRCode from "qrcode.react";
 import { QrReader } from "react-qr-reader";
+import Webcam from "react-webcam";
+import { FRONT_BASE } from "../config";
+
 
 // Estilo base para input
 const inputStyle = {
@@ -20,11 +23,13 @@ export default function ModuloInventario() {
   const [qrData, setQrData] = useState(null);
   const [scanned, setScanned] = useState("");
   const qrCanvasRef = useRef(null);
+  const webcamRef = useRef(null);
+  const [screenshot, setScreenshot] = useState(null);
 
   const onChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
   function printQR(equipo) {
-    setQrData(`http://192.168.0.25:5173/Intrafront/entrega?id=${equipo.serial}`);
+    setQrData(`${FRONT_BASE}/entrega?id=${equipo.serial}`);
     setTimeout(() => {
       const canvas = qrCanvasRef.current.querySelector("canvas");
       const dataUrl = canvas ? canvas.toDataURL() : "";
@@ -47,17 +52,26 @@ export default function ModuloInventario() {
       qrWin.document.write(contenido);
       qrWin.document.close();
       qrWin.focus();
-      qrWin.print(); // <--- ESTE ES EL CAMBIO CLAVE
+      qrWin.print();
     }, 200);
   }
 
-  const handleAdd = e => {
+  const handleAdd = async (e) => {
     e.preventDefault();
     const equipo = { id: Date.now(), ...form };
     setEquipos([equipo, ...equipos]);
-    setQrData(`http://192.168.0.25:5173/Intrafront/entrega?id=${equipo.serial}`);
+    setQrData(`${FRONT_BASE}/entrega?id=${equipo.serial}`);
     setShowForm(false);
     setForm({ nombre: "", tipo: "energía", marca: "", modelo: "", serial: "" });
+
+    // Enviar datos (incluyendo screenshot) al backend
+    const data = new FormData();
+    Object.keys(form).forEach(key => data.append(key, form[key]));
+    if (screenshot) data.append("foto", screenshot);
+    await fetch('/api/register_tool', {
+      method: 'POST',
+      body: data,
+    });
   };
 
   return (
@@ -185,7 +199,7 @@ export default function ModuloInventario() {
             }}>
               <QrReader
                 onResult={(result, error) => {
-                  if (!!result) setScanned(result?.text);
+                  if (!!result) window.location.href = result?.text; // Redirección automática
                 }}
                 constraints={{ facingMode: "environment" }}
                 style={{ width: "100%" }}
@@ -231,6 +245,22 @@ export default function ModuloInventario() {
               <input name="marca" placeholder="Marca" value={form.marca} onChange={onChange} required style={inputStyle} />
               <input name="modelo" placeholder="Modelo" value={form.modelo} onChange={onChange} required style={inputStyle} />
               <input name="serial" placeholder="Serial" value={form.serial} onChange={onChange} required style={inputStyle} />
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                width={300}
+                height={220}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const imageSrc = webcamRef.current.getScreenshot();
+                  setScreenshot(imageSrc);
+                }}
+                style={{ ...inputStyle, background: "#27a9e1", marginBottom: 12, color: "#fff" }}
+              >Tomar Foto</button>
+              {screenshot && <img src={screenshot} alt="Foto Herramienta" style={{ width: 90, marginBottom: 14 }} />}
               <div style={{ display: "flex", gap: 20, marginTop: 12 }}>
                 <button type="submit" style={{ ...inputStyle, background: "#3066fa", color: "#fff" }}>Guardar</button>
                 <button type="button" onClick={() => setShowForm(false)} style={{ ...inputStyle, background: "#2d354b", color: "#fff" }}>Cancelar</button>
@@ -238,11 +268,11 @@ export default function ModuloInventario() {
             </form>
           </div>
         )}
-
       </div>
     </div>
   );
 }
+
 
 
 
